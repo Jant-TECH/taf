@@ -8,6 +8,7 @@ class TableDocumentation extends TafConfig
 {
     public $url = "";
     public $description = [];
+    public $table_name = "";
     public function __construct($table_name)
     {
         $this->table_name = $table_name;
@@ -204,15 +205,15 @@ class TableDocumentation extends TafConfig
                         add_{$this->table_name}({$this->table_name}: any) {
                             this.loading_add_{$this->table_name} = true;
                             this.api.taf_post("{$this->table_name}/add", {$this->table_name}, (reponse: any) => {
-                            this.loading_add_{$this->table_name} = false;
                             if (reponse.status) {
                                 console.log("Opération effectuée avec succés sur la table {$this->table_name}. Réponse= ", reponse);
                                 this.onReset_add_{$this->table_name}()
-                                alert("Opération éffectuée avec succés")
+                                alert("{$this->table_name} ajouté avec succés")
                             } else {
                                 console.log("L\'opération sur la table {$this->table_name} a échoué. Réponse= ", reponse);
                                 alert("L'opération a echoué")
                             }
+                            this.loading_add_{$this->table_name} = false;
                         }, (error: any) => {
                             this.loading_add_{$this->table_name} = false;
                         })
@@ -253,15 +254,15 @@ class TableDocumentation extends TafConfig
                     add_{$this->table_name}({$this->table_name}: any) {
                             this.loading_add_{$this->table_name} = true;
                             this.api.taf_post("{$this->table_name}/add", {$this->table_name}, (reponse: any) => {
-                            this.loading_add_{$this->table_name} = false;
                             if (reponse.status) {
                                 console.log("Opération effectuée avec succés sur la table {$this->table_name}. Réponse= ", reponse);
                                 this.onReset_add_{$this->table_name}()
-                                alert("Cntribuable ajouté avec succés")
+                                alert("{$this->table_name} ajouté avec succés")
                             } else {
                                 console.log("L\'opération sur la table {$this->table_name} a échoué. Réponse= ", reponse);
                                 alert("L'opération a echoué")
                             }
+                            this.loading_add_{$this->table_name} = false;
                         }, (error: any) => {
                             this.loading_add_{$this->table_name} = false;
                         })
@@ -284,7 +285,7 @@ class TableDocumentation extends TafConfig
 
     function getParamsForEdit()
     {
-        $ts_object = implode(",\n\t\t", $this->description );
+        $ts_object = implode(",\n\t\t", $this->description);
         return <<<HTML
                 <div id="json_edit" class="col-12">
                 {
@@ -326,17 +327,17 @@ class TableDocumentation extends TafConfig
                     edit_{$this->table_name}({$this->table_name}: any) {
                         this.loading_edit_{$this->table_name} = true;
                         this.api.taf_post("{$this->table_name}/edit", {$this->table_name}, (reponse: any) => {
-                        this.loading_edit_{$this->table_name} = false;
-                        if (reponse.status) {
-                            console.log("Opération effectuée avec succés sur la table {$this->table_name}. Réponse= ", reponse);
-                            this.onReset_edit_{$this->table_name}()
-                            alert("Opération éffectuée ajouté avec succés")
-                        } else {
-                            console.log("L\'opération sur la table {$this->table_name} a échoué. Réponse= ", reponse);
-                            alert("L'opération a echoué")
-                        }
+                            if (reponse.status) {
+                                console.log("Opération effectuée avec succés sur la table {$this->table_name}. Réponse= ", reponse);
+                                this.onReset_edit_{$this->table_name}()
+                                alert("Opération éffectuée ajouté avec succés")
+                            } else {
+                                console.log("L\'opération sur la table {$this->table_name} a échoué. Réponse= ", reponse);
+                                alert("L'opération a echoué")
+                            }
+                            this.loading_edit_{$this->table_name} = false;
                         }, (error: any) => {
-                        this.loading_edit_{$this->table_name} = false;
+                            this.loading_edit_{$this->table_name} = false;
                         })
                     }
                 </div>
@@ -395,7 +396,7 @@ class TableDocumentation extends TafConfig
             $keysValues[] = '
             ' . $cle . ': ["", Validators.required]';
             $keysValues_update[] = '
-            ' . $cle . ': ['.$this->table_name.'_to_edit.' . $cle . ', Validators.required]';
+            ' . $cle . ': [' . $this->table_name . '_to_edit.' . $cle . ', Validators.required]';
         }
         $content = implode(",", $keysValues);
         $content_update = implode(",", $keysValues_update);
@@ -478,7 +479,6 @@ class TableDocumentation extends TafConfig
                         edit_{$this->table_name}({$this->table_name}: any) {
                             this.loading_edit_{$this->table_name} = true;
                             this.api.taf_post("{$this->table_name}/edit", {$this->table_name}, (reponse: any) => {
-                                this.loading_edit_{$this->table_name} = false;
                                 if (reponse.status) {
                                     console.log("Opération effectuée avec succés sur la table {$this->table_name}. Réponse= ", reponse);
                                     this.onReset_edit_{$this->table_name}()
@@ -487,6 +487,7 @@ class TableDocumentation extends TafConfig
                                     console.log("L\'opération sur la table {$this->table_name} a échoué. Réponse= ", reponse);
                                     alert("L'opération a echoué")
                                 }
+                                this.loading_edit_{$this->table_name} = false;
                             }, (error: any) => {
                                 this.loading_edit_{$this->table_name} = false;
                             })
@@ -540,25 +541,27 @@ class TableDocumentation extends TafConfig
                 <div class="row position-relative my-5">
                 <div id="delete_exemple" class="col-12">
                     delete_{$this->table_name} ({$this->table_name} : any){
-                    //transformation des parametres à envoyer
-                    let formdata = new FormData()
-                    for (const key in {$this->table_name} ) {
-                        formdata.append(key, {$this->table_name} [key])
-                    }
-                
-                    let api_url="{$this->url}delete" 
-                    this.http.post(api_url, formdata).subscribe((reponse: any)=>{
-                        //when success
-                        if(reponse.status){
-                        console.log("Opération effectuée avec succés sur la table {$this->table_name} . Réponse = ",reponse)
-                        }else{
-                        console.log("L\'opération sur la table {$this->table_name}  a échoué. Réponse = ",reponse)
+                        this.loading_delete_{$this->table_name} = true;
+                        //transformation des parametres à envoyer
+                        let formdata = new FormData()
+                        for (const key in {$this->table_name} ) {
+                            formdata.append(key, {$this->table_name} [key])
                         }
-                    },
-                    (error: any)=>{
-                        //when error
-                        console.log("Erreur inconnue! ",error)
-                    })
+                    
+                        this.api.taf_post("{$this->table_name}/delete", {$this->table_name},(reponse: any)=>{
+                            //when success
+                            if(reponse.status){
+                                console.log("Opération effectuée avec succés sur la table {$this->table_name} . Réponse = ",reponse)
+                            }else{
+                                console.log("L\'opération sur la table {$this->table_name}  a échoué. Réponse = ",reponse)
+                            }
+                            this.loading_delete_{$this->table_name} = false;
+                        },
+                        (error: any)=>{
+                            //when error
+                            console.log("Erreur inconnue! ",error)
+                            this.loading_delete_{$this->table_name} = false;
+                        })
                     }
                 </div>
                 </div>
