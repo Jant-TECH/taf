@@ -2,6 +2,8 @@
 
 use Taf\TafConfig;
 
+use function PHPSTORM_META\map;
+
 echo "<h1><a href='./taf'>Accueil</a></h1>";
 try {
     if (!isset($_GET["table"]) && !isset($_GET["tout"])) {
@@ -13,15 +15,22 @@ try {
 
     function generate($table_name)
     {
+        global $taf_config;
         echo "<h1>Génération des routes de la table \"" . $table_name . "\"</h1>";
-
-        $config_api = "./api/config.php";
-        $config_content = file_get_contents($config_api);
-        $config_content = str_replace("{{{table_name}}}", $table_name, $config_content);
         if (!is_dir("./" . $table_name)) {
             mkdir("./" . $table_name);
         }
+        // mise à jour du contenu  du fichier de configuration suivi de la réation du fichier
+        $config_content = str_replace("{{{table_name}}}", $table_name, file_get_contents("./api/config.php"));
         file_put_contents('./' . $table_name . "/config.php", $config_content);
+
+        // mise à jour du contenu  du fichier de configuration suivi de la réation du fichier
+        $table_descriptions = $taf_config->get_table_descriptions($table_name, [$table_name]);
+        $referenced_tables_queries = implode("\n", array_map(function ($une_table) {
+            return '$reponse["data"]["les_' . $une_table . 's"] = $taf_config->get_db()->query("select * from ' . $une_table . '")->fetchAll(PDO::FETCH_ASSOC);';
+        }, $table_descriptions["les_referenced_table"]));
+        $config_content = str_replace("/*{{content}}*/", $referenced_tables_queries, file_get_contents("./api/get_form_details.php"));
+        file_put_contents('./' . $table_name . "/get_form_details.php", $config_content);
 
         copy('./api/add.php', "./" . $table_name . "/add.php");
         copy('./api/delete.php', "./" . $table_name . "/delete.php");

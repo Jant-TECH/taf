@@ -1,6 +1,10 @@
 <?php
+
+use Taf\TableDocumentation;
+
 session_start();
 require './TafConfig.php';
+require './TableDocumentation.php';
 $taf_config = new \Taf\TafConfig();
 $taf_config->check_documentation_auth();
 ?>
@@ -14,40 +18,7 @@ $taf_config->check_documentation_auth();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JantTaf</title>
     <link href="./taf_assets/bootstrap.min.css" rel="stylesheet">
-    <style>
-        #editor {
-            height: 250px;
-            font-size: 14px;
-        }
-
-        #get_exemple,
-        #add_exemple,
-        #edit_exemple,
-        #delete_exemple,
-        #add_form {
-            height: 500px;
-            max-height: 750px;
-            font-size: 14px;
-        }
-
-        #add_form_ts {
-            height: 500px;
-            max-height: 750px;
-            font-size: 14px;
-        }
-
-        #json_add,
-        #json_edit,
-        #json_delete {
-            height: 300px;
-            max-height: 500px;
-            font-size: 14px;
-        }
-
-        #json_delete {
-            height: 200px;
-        }
-    </style>
+    <link href="./taf_assets/css/custom.ace.css" rel="stylesheet">
 </head>
 
 <body class="bg-light">
@@ -72,9 +43,14 @@ $taf_config->check_documentation_auth();
                 comme la récupération, la suppression, l'ajout et la modification des données.
             </p>
             <?php if ($taf_config->is_connected()) : ?>
-                <h1 class="col-12 ">La(es) table(s) de la base de données <span class="text-danger"><?= $taf_config->database_name ?></span>
-                    <a href="./generate.php?tout=oui" class="px-2 right"><button class="btn btn-warning">Tout générer</button></a>
-                </h1>
+                <div class="d-flex align-items-center justify-content-between">
+                    <h1>La(es) table(s) de la base de données <span class="text-danger"><?= $taf_config->database_name ?></span>
+
+                    </h1>
+                    <div class="d-flex">
+                        <a href="./generate.php?tout=oui" class="right"> <button class="btn btn-warning">Tout générer</button></a>
+                    </div>
+                </div>
                 <p class="col-12 fs-4 mt-2">
                 <ol class="list-group" id="mes_tables">
                     <?php
@@ -119,7 +95,7 @@ $taf_config->check_documentation_auth();
         </div>
         <div class="col-12">
             <div class="row position-relative my-3">
-                <div id="editor" class="col-12">
+                <div class="col-12 ace_php">
                     /* Information de connexion à la base de données */
                     public $database_type = "mysql"; // "mysql" | "pgsql" | "sqlsrv"
                     public $host = "localhost"; // adresse ou ip du serveur
@@ -134,25 +110,128 @@ $taf_config->check_documentation_auth();
                 </div>
             </div>
         </div>
+        <div class="d-flex align-items-center justify-content-between mt-5">
+            <h1>Fichier de configuration pour le <span class="text-danger">projet angular</span>
+            </h1>
+            <!-- <a href="./generate.php?tout=oui" class="px-2 right"><button class="btn btn-primary">Télécharger</button></a> -->
+        </div>
+        <p>
+            Créez un fichier JSON dans la racine de votre projet <span class="text-danger">Angular</span> nommé taf.config.json avec le contenu suivant : <br>
+            <a href="https://www.npmjs.com/package/jant-taf" target="_blank">cliquez ici pour consulter la documentation complete</a>
+        </p>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#tab_v1" type="button" role="tab" aria-controls="home" aria-selected="true">De la version 1.0 à la version 1.9</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#tab_v2" type="button" role="tab" aria-controls="profile" aria-selected="false">A partir de la version 2.0</button>
+            </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab_v1" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                <div class="ace_js">
+                    <?php
+                    //echo "<pre>";
+                    echo json_encode(
+                        [
+                            "projectName" => "projet1.angular",
+                            "decription" => "Fichier de configuration de Taf",
+                            "taf_base_url" => $taf_config->get_base_url(),
+                            "les_modules" => [
+                                [
+                                    "module" => "home",
+                                    "les_tables" => array_map(function ($une_table) {
+                                        $docs = new TableDocumentation($une_table);
+                                        return ["table" => $une_table, "description" => $docs->description, "les_types" => ["add", "edit", "list", "details"]];
+                                    }, $taf_config->tables)
+                                ],
+                                [
+                                    "module" => "public",
+                                    "les_tables" => [
+                                        ["table" => "login", "description" => ["login", "pwd"], "les_types" => ["login"]]
+                                    ]
+                                ],
+                            ]
+                        ],
+                        JSON_PRETTY_PRINT
+                    );
+                    //echo "</pre>";
+
+                    ?>
+                </div>
+            </div>
+            <div class="tab-pane" id="tab_v2" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                <div class="ace_js">
+                    <?php
+                    //echo "<pre>";
+                    echo json_encode(
+                        [
+                            "projectName" => "projet1.angular",
+                            "decription" => "Fichier de configuration de Taf",
+                            "taf_base_url" => $taf_config->get_base_url(),
+                            "les_modules" => [
+                                [
+                                    "module" => "home",
+                                    "les_tables" => array_map(function ($une_table) {
+                                        $docs = new TableDocumentation($une_table);
+                                        return ["table" => $une_table, "description" => $docs->description, "table_descriptions" => $docs->table_descriptions, "les_types" => ["add", "edit", "list", "details"]];
+                                    }, $taf_config->tables)
+                                ],
+                                [
+                                    "module" => "public",
+                                    "les_tables" => [
+                                        ["table" => "login", "description" => ["login", "pwd"], "les_types" => ["login"]]
+                                    ]
+                                ],
+                            ]
+                        ],
+                        JSON_PRETTY_PRINT
+                    );
+                    //echo "</pre>";
+
+                    ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-between">
+            <h1>Service angular <span class="text-danger">api.service.ts</span>
+            </h1>
+            <!-- <a href="./generate.php?tout=oui" class="px-2 right"><button class="btn btn-primary">Télécharger</button></a> -->
+        </div>
+        <h3>Instalations à faire</h3>
+        <ul>
+            <li>
+                <span class="text-danger">bootstrap</span> : <span class="bg-secondary badge">npm install bootstrap</span> (importez les fichiers css et js)
+            </li>
+            <li>
+                <span class="text-danger">momentjs</span> : gestion des dates avec la commande <span class="bg-secondary badge">npm install moment</span>
+            </li>
+            <li>
+                <span class="text-danger">@auth0/angular-jwt</span> : gestion des token <span class="bg-secondary badge">npm install @auth0/angular-jwt</span>
+            </li>
+        </ul>
+
+        <p>
+            Créez un service dans votre projet <span class="text-danger">Angular</span> nommé <span class="text-danger">api.service.ts</span> avec le contenu suivant : <br>
+        </p>
+        <div class="my-3 ace_js">
+            <?php
+            //echo "<pre>";
+            echo $taf_config->get_api_service();
+            //echo "</pre>";
+
+            ?>
+        </div>
     </main>
 </body>
 <!-- JavaScript Bundle with Popper -->
 <script src="./taf_assets/bootstrap.bundle.min.js"></script>
 <script src="./taf_assets/ace.js" type="text/javascript" charset="utf-8"></script>
-<script>
-    var config = {
-        theme: "ace/theme/monokai",
-        selectionStyle: "text",
-        readOnly: true,
-        showLineNumbers: false,
-        showGutter: false
-    };
-
-    var editor = ace.edit('editor', config);
-    editor.session.setMode({
-        path: "ace/mode/php",
-        inline: true
-    });
-</script>
+<script src="./taf_assets/ace.beautify.js"></script>
+<script src="./taf_assets/js/custom.ace.js"></script>
 
 </html>

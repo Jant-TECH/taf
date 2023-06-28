@@ -32,40 +32,6 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JantTaf</title>
     <link href="./taf_assets/bootstrap.min.css" rel="stylesheet">
-    <style>
-        #editor {
-            height: 150px;
-            font-size: 14px;
-        }
-
-        #get_exemple,
-        #add_exemple,
-        #edit_exemple,
-        #delete_exemple,
-        #add_form {
-            height: 500px;
-            max-height: 750px;
-            font-size: 14px;
-        }
-
-        #add_form_ts {
-            height: 500px;
-            max-height: 750px;
-            font-size: 14px;
-        }
-
-        #json_add,
-        #json_edit,
-        #json_delete {
-            height: 300px;
-            max-height: 500px;
-            font-size: 14px;
-        }
-
-        #json_delete {
-            height: 200px;
-        }
-    </style>
 </head>
 
 <body class="bg-light">

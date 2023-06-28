@@ -20,6 +20,7 @@ try {
     <title>JantTaf</title>
     <link href="../taf_assets/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../taf_assets/taf_index.css">
+    <link href="../taf_assets/css/custom.ace.css" rel="stylesheet">
 </head>
 
 <body class="bg-light">
@@ -35,21 +36,28 @@ try {
         </nav>
     </header>
     <main class="container mt-5">
-        <div class="row">
+        <div class="">
             <p class="col-12 fs-3 text-justify">
             <h1>Description de la table <span class="text-danger"><?= $table_documentation->table_name ?></span></h1>
             <ol>
                 <?php
-                    try {
+                try {
+                    if (count($table_documentation->table_descriptions["les_colonnes"]) > 0) {
+                        foreach ($table_documentation->table_descriptions["les_colonnes"] as $key => $value) {
+                            echo "<li class=\"\">" . $value["Field"] . " <span class=\"text-primary\">" . $value["explications"] . "</span></li>";
+                        }
+                    } else {
                         foreach ($table_documentation->description as $key => $value) {
                             echo "<li class=\"\">" . $value . "</li>";
                         }
-                    } catch (\Throwable $th) {
-                        echo "<li>" . $th->getMessage() . "</li>";
                     }
+                } catch (\Throwable $th) {
+                    echo "<li>" . $th->getMessage() . "</li>";
+                }
                 ?>
             </ol>
-            </p>
+        </div>
+        <div>
             <h1>Action(s) possible(s) dans la table <span class="text-danger"><?= $table_documentation->table_name ?></span></h1>
             <?php
             $dir    = './';
@@ -57,7 +65,7 @@ try {
             foreach ($files as $key => $value) {
                 if ($value != "." && $value != ".."  && $value != "index.php"  && $value != "config.php") {
                     $action = str_replace(".php", "", $value);
-                    
+
                     if ($action == "get") {
                         echo $table_documentation->get();
                     } else if ($action == "add") {
@@ -70,10 +78,29 @@ try {
                 }
             }
             ?>
+        </div>
+
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
     </main>
 </body>
 <script src="../taf_assets/ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="../taf_assets/bootstrap.bundle.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="../taf_assets/taf_index.js"></script>
+<script src="../taf_assets/ace.beautify.js"></script>
+<script src="../taf_assets/js/custom.ace.js"></script>
+
 
 </html>

@@ -1,4 +1,5 @@
 <?php
+
 namespace Taf;
 
 class TableQuery
@@ -8,30 +9,6 @@ class TableQuery
     public function __construct($table_name)
     {
         $this->table_name = $table_name;
-    }
-    /**
-     * generate the insert query to tablename with some data
-     *
-     * @param [type] $data_to_insert
-     * @return string la requete entière
-     */
-    public function insert_query($data_to_insert)
-    {
-        $keys = array();
-        $values = array();
-        foreach ($data_to_insert as $key => $value) {
-            $keys[] = $key;
-            $values[] = addslashes($value);
-        }
-        return "INSERT INTO {$this->table_name}(" . implode(",", $keys) . ") VALUES('" . implode("','", $values) . "')";
-    }
-    function update_query($data_to_update, $condition)
-    {
-        $keyEgalValue = array();
-        foreach ($data_to_update as $key => $value) {
-            $keyEgalValue[] = addslashes($key) . " = '" . addslashes($value) . "'";
-        }
-        return "update  {$this->table_name} set " . implode(",", $keyEgalValue) . " " . $condition;
     }
     function dynamicCondition($data_condition, $operation)
     {
@@ -46,22 +23,29 @@ class TableQuery
     }
     function dynamicInsert($assoc_array)
     {
-      $keys = array();
-      $values = array();
-      foreach ($assoc_array as $key => $value) {
-        $keys[] = addslashes(htmlspecialchars($key));
-        $values[] = addslashes(htmlspecialchars($value));
-      }
-      return "INSERT INTO $this->table_name(" . implode(",", $keys) . ") VALUES('" . implode("','", $values) . "')";
-    }
-    
-    function dynamicUpdate($assoc_array, $condition)
-    {
-      $keyEgalValue = array();
-      foreach ($assoc_array as $key => $value) {
-        $keyEgalValue[] = addslashes($key) . " = '" . addslashes($value) . "'";
-      }
-      return "update $this->table_name set " . implode(",", $keyEgalValue) . " " . $condition;
+        $keys = array();
+        $values = array();
+        foreach ($assoc_array as $key => $value) {
+            $keys[] = addslashes(htmlspecialchars($key));
+            if ($value == '') {
+                $values[] = 'null';
+            } else {
+                $values[] = "'" . addslashes(htmlspecialchars($value)) . "'";
+            }
+        }
+        return "INSERT INTO $this->table_name(" . implode(",", $keys) . ") VALUES(" . implode(",", $values) . ")";
     }
 
+    function dynamicUpdate($assoc_array, $condition)
+    {
+        $keyEgalValue = array();
+        foreach ($assoc_array as $key => $value) {
+            if ($value == '') {
+                $keyEgalValue[] = addslashes($key) . " = null";
+            } else {
+                $keyEgalValue[] = addslashes($key) . " = '" . addslashes($value) . "'";
+            }
+        }
+        return "update $this->table_name set " . implode(",", $keyEgalValue) . " " . $condition;
+    }
 }
