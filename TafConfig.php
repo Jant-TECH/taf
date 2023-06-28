@@ -310,7 +310,16 @@ class TafConfig
                 $une_colonne["explications"] = "clé étrangère liée à la colonne " . $une_colonne["table"]["REFERENCED_COLUMN_NAME"] . " de la table " . $une_colonne["table"]["REFERENCED_TABLE_NAME"];
                 if (in_array($une_colonne["table"]["REFERENCED_TABLE_NAME"], $les_based_table_name)) { // on revient à la table de depart et on risque de'etre en boucle infinie
                     $une_colonne["table_existant"] = true;
-                    $resultat['les_referenced_table'][] = $une_colonne["table"]["REFERENCED_TABLE_NAME"];
+                    if ($une_colonne["table"]["REFERENCED_TABLE_NAME"] == $table_name) {
+                        $une_colonne["referenced_table"] = array(
+                            "table_name" => $une_colonne["table"]["REFERENCED_TABLE_NAME"],
+                            "cle_primaire" => $resultat["cle_primaire"],
+                            "les_based_table_name" => $les_based_table_name,
+                            "les_referenced_table" => $resultat["les_referenced_table"],
+                            "les_colonnes" => $this->get_db()->query("DESCRIBE $table_name")->fetchAll(PDO::FETCH_ASSOC)
+                        );
+                        $resultat['les_referenced_table'][] = $une_colonne["table"]["REFERENCED_TABLE_NAME"];
+                    }
                 } else if ($une_colonne["table"]) {
                     $resultat['les_referenced_table'][] = $une_colonne["table"]["REFERENCED_TABLE_NAME"];
                     $les_based_table_name[] = $une_colonne["table"]["REFERENCED_TABLE_NAME"];

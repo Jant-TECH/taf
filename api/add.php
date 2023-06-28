@@ -33,7 +33,7 @@ try {
     // $reponse["query"]=$query;
     if ($taf_config->get_db()->exec($query)) {
         $reponse["status"] = true;
-        $params["id"] = $taf_config->get_db()->lastInsertId();
+        $params["id_$table_name"] = $taf_config->get_db()->lastInsertId();
         $reponse["data"] = $params;
     } else {
         $reponse["status"] = false;
