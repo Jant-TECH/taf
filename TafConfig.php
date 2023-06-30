@@ -302,7 +302,7 @@ class TafConfig
                 $la_cle_etrangere = $une_colonne["Field"];
                 $query2 = "SELECT TABLE_NAME,COLUMN_NAME,REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME
           FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
-          WHERE CONSTRAINT_SCHEMA='db_these_1' and REFERENCED_TABLE_NAME IS NOT NULL
+          WHERE CONSTRAINT_SCHEMA='" . $this->database_name . "' and REFERENCED_TABLE_NAME IS NOT NULL
           and TABLE_NAME='" . $table_name . "' and COLUMN_NAME='$la_cle_etrangere'
           order by REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME";
                 $une_colonne["table"] = $this->get_db()->query($query2)->fetch(PDO::FETCH_ASSOC);
