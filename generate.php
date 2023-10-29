@@ -21,7 +21,7 @@ try {
 
         // mise à jour du contenu  du fichier de configuration suivi de la réation du fichier
         $config_content = str_replace("{{{table_name}}}", $table_name, file_get_contents("./api/config.php"));
-        if (!file_exists("./api/config.php")) {
+        if (!file_exists('./' . $table_name . "/config.php")) {
             file_put_contents('./' . $table_name . "/config.php", $config_content);
         }
 
