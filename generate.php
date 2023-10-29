@@ -2,8 +2,6 @@
 
 use Taf\TafConfig;
 
-use function PHPSTORM_META\map;
-
 echo "<h1><a href='./taf'>Accueil</a></h1>";
 try {
     if (!isset($_GET["table"]) && !isset($_GET["tout"])) {
@@ -20,9 +18,12 @@ try {
         if (!is_dir("./" . $table_name)) {
             mkdir("./" . $table_name);
         }
+
         // mise à jour du contenu  du fichier de configuration suivi de la réation du fichier
         $config_content = str_replace("{{{table_name}}}", $table_name, file_get_contents("./api/config.php"));
-        file_put_contents('./' . $table_name . "/config.php", $config_content);
+        if (!file_exists("./api/config.php")) {
+            file_put_contents('./' . $table_name . "/config.php", $config_content);
+        }
 
         // mise à jour du contenu  du fichier de configuration suivi de la réation du fichier
         $table_descriptions = $taf_config->get_table_descriptions($table_name, [$table_name]);
@@ -30,13 +31,24 @@ try {
             return '$reponse["data"]["les_' . $une_table . 's"] = $taf_config->get_db()->query("select * from ' . $une_table . '")->fetchAll(PDO::FETCH_ASSOC);';
         }, $table_descriptions["les_referenced_table"]));
         $config_content = str_replace("/*{{content}}*/", $referenced_tables_queries, file_get_contents("./api/get_form_details.php"));
-        file_put_contents('./' . $table_name . "/get_form_details.php", $config_content);
-
-        copy('./api/add.php', "./" . $table_name . "/add.php");
-        copy('./api/delete.php', "./" . $table_name . "/delete.php");
-        copy('./api/edit.php', "./" . $table_name . "/edit.php");
-        copy('./api/get.php', "./" . $table_name . "/get.php");
-        copy('./api/index.php', "./" . $table_name . "/index.php");
+        if (!file_exists('./' . $table_name . "/get_form_details.php")) {
+            file_put_contents('./' . $table_name . "/get_form_details.php", $config_content);
+        }
+        if (!file_exists("./" . $table_name . '/add.php')) {
+            copy('./api/add.php', "./" . $table_name . "/add.php", );
+        }
+        if (!file_exists("./" . $table_name . '/delete.php')) {
+            copy('./api/delete.php', "./" . $table_name . "/delete.php");
+        }
+        if (!file_exists("./" . $table_name . '/edit.php')) {
+            copy('./api/edit.php', "./" . $table_name . "/edit.php");
+        }
+        if (!file_exists("./" . $table_name . '/get.php')) {
+            copy('./api/get.php', "./" . $table_name . "/get.php");
+        }
+        if (!file_exists("./" . $table_name . '/index.php')) {
+            copy('./api/index.php', "./" . $table_name . "/index.php");
+        }
         echo "<h3>Succes</h3>";
     }
     if (isset($_GET["table"])) {
