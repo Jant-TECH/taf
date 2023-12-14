@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 use Taf\TafConfig;
 
 echo "<h1><a href='./taf'>Accueil</a></h1>";
@@ -67,6 +67,7 @@ try {
             generate($table_name);
         }
         header('location: taf.php');
+        ob_end_flush();
     }
 } catch (\Throwable $th) {
 
