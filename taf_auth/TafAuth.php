@@ -43,38 +43,38 @@ class TafAuth
     public function check_auth()
     {
         $auth_reponse=array("status"=>false,"message"=>"");
-        // try {
-        //     if (!isset($_SERVER['HTTP_AUTHORIZATION']) || !preg_match('/Bearer\s(\S+)/', $_SERVER['HTTP_AUTHORIZATION'], $matches)) {
-        //         $auth_reponse["status"] = false;
-        //         $auth_reponse["message"] = 'Une connexion est requise pour accéder à cette ressource';
-        //         // var_dump($_SERVER);
-        //     } else {
-        //         $jwt = $matches[1];
-        //         if (!$jwt) {
-        //             $auth_reponse["status"] = false;
-        //             $auth_reponse["message"] = 'Une connexion est requise pour accéder à cette ressource';
-        //         } else {
-        //             $token = JWT::decode($jwt, new Key($this->secretKey, 'HS256'));
-        //             $now = new DateTimeImmutable();
+        try {
+            if (!isset($_SERVER['HTTP_AUTHORIZATION']) || !preg_match('/Bearer\s(\S+)/', $_SERVER['HTTP_AUTHORIZATION'], $matches)) {
+                $auth_reponse["status"] = false;
+                $auth_reponse["message"] = 'Une connexion est requise pour accéder à cette ressource';
+                // var_dump($_SERVER);
+            } else {
+                $jwt = $matches[1];
+                if (!$jwt) {
+                    $auth_reponse["status"] = false;
+                    $auth_reponse["message"] = 'Une connexion est requise pour accéder à cette ressource';
+                } else {
+                    $token = JWT::decode($jwt, new Key($this->secretKey, 'HS256'));
+                    $now = new DateTimeImmutable();
 
-        //             if ($token->nbf > $now->getTimestamp()) {
-        //                 $auth_reponse["status"] = false;
-        //                 $auth_reponse["message"] = 'Il n\'est pas encore l\'heure de démarrer la session';
-        //             }elseif ($token->exp < $now->getTimestamp()) {
-        //                 $auth_reponse["status"] = false;
-        //                 $auth_reponse["message"] = 'votre session est expirée';
-        //             }else{
-        //                 $auth_reponse["status"] = true;
-        //                 $auth_reponse["message"] = 'session valide';
-        //             }
-        //         }
-        //     }
-        // } catch (\Throwable $th) {
-        //     $auth_reponse["status"] = false;
-        //     $auth_reponse["message"] = $th->getMessage();
-        // }
-        $auth_reponse["status"] = true;
-        $auth_reponse["message"] = 'session valide';
+                    if ($token->nbf > $now->getTimestamp()) {
+                        $auth_reponse["status"] = false;
+                        $auth_reponse["message"] = 'Il n\'est pas encore l\'heure de démarrer la session';
+                    }elseif ($token->exp < $now->getTimestamp()) {
+                        $auth_reponse["status"] = false;
+                        $auth_reponse["message"] = 'votre session est expirée';
+                    }else{
+                        $auth_reponse["status"] = true;
+                        $auth_reponse["message"] = 'session valide';
+                    }
+                }
+            }
+        } catch (\Throwable $th) {
+            $auth_reponse["status"] = false;
+            $auth_reponse["message"] = $th->getMessage();
+        }
+        // $auth_reponse["status"] = true;
+        // $auth_reponse["message"] = 'session valide';
         return $auth_reponse;
     }
 }
