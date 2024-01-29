@@ -62,26 +62,20 @@ class TableDocumentation extends TafConfig
     public function get()
     {
         return <<<HTML
-        <div class="d-flex justify-content-between">
-            <a class="fs-2" data-bs-toggle="collapse" href="#docs_get_{$this->table_name}" role="button" aria-expanded="false" aria-controls="docs_get_{$this->table_name}">
-            Get
-            </a>
-            <!-- Example single danger button -->
-            <div class="btn-group d-inline">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    Actions
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="get">Tester l'api</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="collapse" id="docs_get_{$this->table_name}">
-            <p class="col-12 text-justify fs-4">
-                L'action get permet d'obtenir des données de votre table <span class="text-danger">{$this->table_name}</span>, grâce 
-                à la fonction ci-dessous vous pouvez récupérer une donnée spécifique ou toutes les données.
-            </p>
-            <div class="ace_js my-5">
+                <div class="d-flex justify-content-between">
+                     <h3 class="mb-2 mt-3">Get</h4>
+                    <!-- Example single danger button -->
+                    <button type="button" class="btn btn-soft-light">
+                        <a href="get">
+                        Tester l'api
+                        </a>
+                    </button>
+                </div>
+                   <p class="fs-5">
+                   L'action "get" vous ouvre les portes pour accéder aux données de la table <span class="text-danger">{$this->table_name}</span>. Grâce à la fonction ci-dessous, vous pouvez récupérer une donnée spécifique ou l'intégralité des données avec une aisance remarquable. <br>
+                  Cette fonction requiert une manipulation précise, vous permettant de cibler une donnée particulière ou d'extraire l'ensemble des données de manière fluide et efficace. Un outil puissant pour répondre à vos besoins d'information.
+                    </p>           
+                <div class="ace_js">
                 get_$this->table_name(){
                     let params={}// les conditions à mettre ici
                     this.loading_edit_{$this->table_name} = true;
@@ -100,11 +94,7 @@ class TableDocumentation extends TafConfig
                         console.log("Erreur inconnue! ",error);
                     })
                 }
-            </div>
-        </div>
-            <br>
-            <br>
-            <br>
+               </div>
         HTML;
     }
     public function getParamsForAdd()
@@ -266,24 +256,17 @@ class TableDocumentation extends TafConfig
     {
         return <<<HTML
         <div class="d-flex justify-content-between">
-            <a class="fs-2" data-bs-toggle="collapse" href="#docs_add_{$this->table_name}" role="button" aria-expanded="false" aria-controls="docs_add_{$this->table_name}">
-            Add
-            </a>
+             <h3 class="mb-2 mt-3">Add</h4>
             <!-- Example single danger button -->
-            <div class="btn-group d-inline">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    Actions
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="add">Tester l'api</a></li>
-                </ul>
-            </div>
+            <button type="button" class="btn btn-soft-light">
+                <a href="add">
+                Tester l'api
+                </a>
+            </button>
         </div>
-        <div class="collapse show" id="docs_add_{$this->table_name}">
-            <p class="text-justify fs-4">
-            Pour ajouter ainsi une nouvelle ligne dans la table <span class="text-danger">{$this->table_name}</span>, c'est simple.
-            Fini les longs formulaire à coder à la main, tout est généré automatiquement pour vous simplifiez la vie. <br>
-            Vous n'avez qu'à faire nous faire confiance en copiant le code ci-dessous et le mettre au bon endroit dans votre projet et le tour est joué.
+           <p class="fs-5">
+           Pour insérer une nouvelle entrée dans la table <span class="text-danger">{$this->table_name}</span>, la démarche est aisée. Dites adieu aux laborieux formulaires à concevoir manuellement, tout est orchestré automatiquement pour vous simplifier l'existence. <br>
+           Il vous suffit de nous accorder votre confiance en copiant le code ci-dessous, puis de l'intégrer judicieusement dans votre projet. Le tour est joué.
             </p>
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -308,10 +291,6 @@ class TableDocumentation extends TafConfig
                     </div>
                 </div>
             </div>
-        </div>
-            <br>
-            <br>
-            <br>
         HTML;
     }
 
@@ -331,26 +310,18 @@ class TableDocumentation extends TafConfig
     {
         return <<<HTML
         <div class="d-flex justify-content-between">
-            <a class="fs-2" data-bs-toggle="collapse" href="#docs_edit_{$this->table_name}" role="button" aria-expanded="false" aria-controls="docs_edit_{$this->table_name}">
-            Edit
-            </a>
+             <h3 class="mb-2 mt-3">Edit</h4>
             <!-- Example single danger button -->
-            <div class="btn-group d-inline">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    Actions
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="edit">Tester l'api</a></li>
-                </ul>
-            </div>
+            <button type="button" class="btn btn-soft-light">
+                <a href="edit">
+                Tester l'api
+                </a>
+            </button>
         </div>
-        <div class="collapse" id="docs_edit_{$this->table_name}">
-            <p class="text-justify fs-4">
-            L'action edit permet de modifier des données dans votre table <span class="text-danger">{$this->table_name}</span>, grâce 
-            à la fonction ci-dessous vous pouvez modifier des lignes de votre table. <br>
-            Cette fonction prend en paramètre un objet dont les clés correspondent aux attributs de la table {$this->table_name} dont vous
-            souhaitez modifier.
-            </p>
+           <p class="fs-5">
+           L'action "éditer" vous offre la possibilité de façonner vos données au sein de la table <span class="text-danger">{$this->table_name}</span>. Grâce à la fonction ci-dessous, la métamorphose de lignes au sein de votre table devient une réalité palpable. <br>
+           Cette fonction requiert un objet en paramètre, où chaque clé correspond harmonieusement aux attributs de la table {$this->table_name} que vous aspirez à ajuster. C'est là, une étape vers la personnalisation à votre guise.
+            </p>           
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
@@ -374,11 +345,6 @@ class TableDocumentation extends TafConfig
                     </div>
                 </div>
             </div>
-        </div>
-        <br>
-        <br>
-        <br>
-        
         HTML;
     }
     public function edit_form_html()
@@ -552,27 +518,19 @@ class TableDocumentation extends TafConfig
     function delete()
     {
         return <<<HTML
-            <div class="d-flex justify-content-between">
-                <a class="fs-2" data-bs-toggle="collapse" href="#docs_delete_{$this->table_name}" role="button" aria-expanded="false" aria-controls="docs_delete_{$this->table_name}">
-                Delete
-                </a>
-                <!-- Example single danger button -->
-                <div class="btn-group d-inline">
-                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        Actions
+                <div class="d-flex justify-content-between">
+                     <h3 class="mb-2 mt-3">Delete</h4>
+                    <!-- Example single danger button -->
+                    <button type="button" class="btn btn-soft-light">
+                        <a href="delete">
+                        Tester l'api
+                        </a>
                     </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="delete">Tester l'api</a></li>
-                    </ul>
                 </div>
-            </div>
-            <div class="collapse" id="docs_delete_{$this->table_name}">
-                <p class="text-justify fs-4">
-                L'action delete permet de supprimer des données de votre table <span class="text-danger">{$this->table_name}</span>, grâce 
-                à la fonction ci-dessous vous pouvez supprimer des lignes de votre table. <br>
-                Cette fonction prend en paramètre un objet dont les clés correspondent aux attributs de la table {$this->table_name} et dont 
-                les valeurs permettent de définir la condition de suppression d'une ligne de la table.
-                </p>
+                   <p class="fs-5">
+                   L'action "supprimer" vous octroie le pouvoir de retrancher des données de la table <span class="text-danger">{$this->table_name}</span>. Grâce à la fonction ci-dessous, l'élimination de lignes devient une opération à portée de main. <br>
+                   Cette fonction requiert un objet en paramètre, où chaque clé s'accorde harmonieusement aux attributs de la table {$this->table_name}. Les valeurs associées définissent avec précision les conditions pour la suppression d'une ligne. Une démarche réfléchie vers la gestion ciblée de vos données.
+                    </p>           
                 <div class="ace_js">
                     /*
                     Suppression de l'enregistresement dont l'id_{$this->table_name}=1
@@ -598,10 +556,6 @@ class TableDocumentation extends TafConfig
                         })
                     }
                 </div>
-            </div>
-            <br>
-            <br>
-            <br>
-       HTML;
-    }
+            HTML;
+        }
 }

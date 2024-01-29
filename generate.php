@@ -1,5 +1,5 @@
 <?php
-ob_start();
+
 use Taf\TafConfig;
 
 echo "<h1><a href='./taf'>Accueil</a></h1>";
@@ -19,13 +19,13 @@ try {
             mkdir("./" . $table_name);
         }
 
-        // mise à jour du contenu  du fichier de configuration suivi de la création du fichier
+        // mise à jour du contenu  du fichier de configuration suivi de la réation du fichier
         $config_content = str_replace("{{{table_name}}}", $table_name, file_get_contents("./api/config.php"));
         if (!file_exists('./' . $table_name . "/config.php")) {
             file_put_contents('./' . $table_name . "/config.php", $config_content);
         }
 
-        // mise à jour du contenu  du fichier get_form_details suivi de la réation du fichier
+        // mise à jour du contenu  du fichier de configuration suivi de la réation du fichier
         $table_descriptions = $taf_config->get_table_descriptions($table_name, [$table_name]);
         $referenced_tables_queries = implode("\n", array_map(function ($une_table) {
             return '$reponse["data"]["les_' . $une_table . 's"] = $taf_config->get_db()->query("select * from ' . $une_table . '")->fetchAll(PDO::FETCH_ASSOC);';
@@ -34,7 +34,6 @@ try {
         if (!file_exists('./' . $table_name . "/get_form_details.php")) {
             file_put_contents('./' . $table_name . "/get_form_details.php", $config_content);
         }
-        // 
         if (!file_exists("./" . $table_name . '/add.php')) {
             copy('./api/add.php', "./" . $table_name . "/add.php", );
         }
@@ -52,22 +51,18 @@ try {
         }
         echo "<h3>Succes</h3>";
     }
-
-
-
     if (isset($_GET["table"])) {
         $table_name = $_GET["table"];
         generate($table_name);
         header('location:./taf#table_' . $table_name);
     } elseif (isset($_GET["tout"])) {
-        // $query = "SHOW TABLES";
-        // $tables = $taf_config->get_db()->query($query)->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($taf_config->tables as $key => $value) {
+        $query = "SHOW TABLES";
+        $tables = $taf_config->get_db()->query($query)->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($tables as $key => $value) {
             $table_name = $value["Tables_in_" . $taf_config->database_name];
             generate($table_name);
         }
         header('location: taf.php');
-        ob_end_flush();
     }
 } catch (\Throwable $th) {
 
