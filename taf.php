@@ -6,7 +6,7 @@ session_start();
 require './TafConfig.php';
 require './TableDocumentation.php';
 $taf_config = new \Taf\TafConfig();
-$taf_config->check_documentation_auth();
+//$taf_config->check_documentation_auth();
 ?>
 
 <!DOCTYPE html>

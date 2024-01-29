@@ -1,4 +1,4 @@
-    <?php
+<?php
     require './TafConfig.php';
     $taf_config = new \Taf\TafConfig();
     $taf_config->allow_cors();
@@ -20,5 +20,5 @@
         exit;
     }
     $reponse["status"] = true;
-    $reponse["data"] = $params;
+    $reponse["data"] = $username;
     echo json_encode($reponse);

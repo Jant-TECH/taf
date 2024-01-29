@@ -15,9 +15,9 @@ class TafConfig
     public $database_type = "mysql"; // "mysql" | "pgsql" | "sqlsrv"
     public $host = "localhost"; // adresse ou ip du serveur
     public $port = "3306"; // 3306 pour mysql | 5432 pour pgsql | 1433 pour sqlsrv 
-    public $database_name = "suivi_livraison"; // nom de la base de données
-    public $user = "root"; // nom de l'utilisateur de la base de données
-    public $password = ""; // mot de passe de l'utilisateur de la base de données
+    public $database_name = "ammo1331_test2_taf"; // nom de la base de données
+    public $user = "ammo1331_taf_test2"; // nom de l'utilisateur de la base de données
+    public $password = "X!^L{GisHKS3"; // mot de passe de l'utilisateur de la base de données
 
     /* informations de connexion à la documentation */
     public $documentation_username = "admin"; // nom d'utilisateur pour accéder à la documentation
