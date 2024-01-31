@@ -3,7 +3,6 @@
 use Taf\TafAuth;
 use Taf\TableDocumentation;
 
-
 try {
     require './TafConfig.php';
     require './TableDocumentation.php';
@@ -32,6 +31,7 @@ try {
         $docs = new TableDocumentation($une_table);
         return ["table" => $une_table, "description" => $docs->description, "les_types" => ["add", "edit", "list", "details"]];
     }, $taf_config->tables);
+    $reponse["api_service"]=$taf_config->get_api_service();
     $reponse["table_v2"] = array_map(function ($une_table) {
         $docs = new TableDocumentation($une_table);
         return ["table" => $une_table, "description" => $docs->description, "table_descriptions" => $docs->table_descriptions, "les_types" => ["add", "edit", "list", "details"]];
@@ -44,4 +44,3 @@ try {
     $reponse["erreur"] = $th->getMessage();
     echo json_encode($reponse);
 }
-
