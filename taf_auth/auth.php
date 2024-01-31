@@ -1,7 +1,6 @@
 <?php
 
 use Taf\TafConfig;
-use Firebase\JWT\JWT;
 use Taf\TafAuth;
 
 try {
