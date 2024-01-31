@@ -1,12 +1,11 @@
 <?php
 
-use Taf\TafAuth;
 use Taf\TableDocumentation;
 
 
 try {
-    require './TafConfig.php';
-    require './TableDocumentation.php';
+    require '../TafConfig.php';
+    require '../TableDocumentation.php';
     $taf_config = new \Taf\TafConfig();
     $taf_config->allow_cors();
     $tables = $taf_config->tables;
