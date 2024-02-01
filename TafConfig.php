@@ -62,7 +62,7 @@ class TafConfig
                         static::$db_instance = new PDO("{$this->database_type}:host={$this->host};port={$this->port};dbname={$this->database_name};", $this->user, $this->password);
                         break;
                     case 'mysql':
-                        static::$db_instance = new PDO("{$this->database_type}:host={$this->host};port={$this->port};dbname={$this->database_name};", $this->user, $this->password);
+                        static::$db_instance = new PDO("{$this->database_type}:host={$this->host};port={$this->port};dbname={$this->database_name};charset=utf8;", $this->user, $this->password);
                         break;
                     case 'sqlsrv':
                         static::$db_instance = new PDO("{$this->database_type}:Server={$this->host};Database={$this->database_name}", $this->user, $this->password);

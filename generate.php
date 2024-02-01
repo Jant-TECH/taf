@@ -73,7 +73,6 @@ try {
             $reponse["data"]["index"] = true;
         }
         $reponse["status"] = true;
-        echo json_encode($reponse);
     }
     if($params["tout"]){
         $query = "SHOW TABLES";
