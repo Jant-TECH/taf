@@ -127,7 +127,8 @@ class TafConfig
     }
     public function get_api_service()
     {
-        return "import { HttpClient, HttpHeaders } from '@angular/common/http';
+    return "
+                import { HttpClient, HttpHeaders } from '@angular/common/http';
                 import { Injectable } from '@angular/core';
                 import { Router } from '@angular/router';
                 import { JwtHelperService } from '@auth0/angular-jwt';

@@ -26,15 +26,51 @@ try {
     $reponse["nom_base_de_donnees"] = $taf_config->database_name;
     $reponse["connexion"] = $taf_config->is_connected();
     $reponse["username"] = $taf_config->user;
-    $reponse["table_v1"] = array_map(function ($une_table) {
-        $docs = new TableDocumentation($une_table);
-        return ["table" => $une_table, "description" => $docs->description, "les_types" => ["add", "edit", "list", "details"]];
-    }, $taf_config->tables);
+    $reponse["table_v1"] =  [
+        "projectName" => "projet1.angular",
+        "decription" => "Fichier de configuration de Taf",
+        "taf_base_url" => $taf_config->get_base_url(),
+        "les_modules" => [
+            [
+                "module" => "home",
+                "les_tables" => array_map(function ($une_table) {
+                    $docs = new TableDocumentation($une_table);
+                    return ["table" => $une_table, "description" => $docs->description, "les_types" => ["add", "edit", "list", "details"]];
+                }, $taf_config->tables)
+            ],
+            [
+                "module" => "public",
+                "les_tables" => [
+                    ["table" => "login", "description" => ["login", "pwd"], "les_types" => ["login"]]
+                ]
+            ],
+        ]
+        ];
     $reponse["api_service"]=$taf_config->get_api_service();
-    $reponse["table_v2"] = array_map(function ($une_table) {
-        $docs = new TableDocumentation($une_table);
-        return ["table" => $une_table, "description" => $docs->description, "table_descriptions" => $docs->table_descriptions, "les_types" => ["add", "edit", "list", "details"]];
-    }, $taf_config->tables);
+    $reponse["table_v2"] =    [
+        "projectName" => "projet1.angular",
+        "decription" => "Fichier de configuration de Taf",
+        "taf_base_url" => $taf_config->get_base_url(),
+        "les_modules" => [
+            [
+                "module" => "home",
+                "les_tables" => array_map(function ($une_table) {
+                    $docs = new TableDocumentation($une_table);
+                    return ["table" => $une_table, "description" => $docs->description, "table_descriptions" => $docs->table_descriptions, "les_types" => ["add", "edit", "list", "details"]];
+                }, $taf_config->tables)
+            ],
+            [
+                "module" => "public",
+                "les_tables" => [
+                    ["table" => "login", "description" => ["login", "pwd"], "les_types" => ["login"]]
+                ]
+            ],
+        ]
+        ];
+    $reponse["tables"] = array_map(function ($une_table) {
+                    $docs = new TableDocumentation($une_table);
+                    return ["table" => $une_table, "description" => $docs->description, "table_descriptions" => $docs->table_descriptions, "les_types" => ["add", "edit", "list", "details"]];
+                }, $taf_config->tables);
     $reponse["base_url"] = $taf_config->get_base_url();
     $reponse["status"] = true;
     echo json_encode($reponse);

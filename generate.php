@@ -3,16 +3,21 @@
 use Taf\TafConfig;
 
 $reponse = array();
-
+if (file_get_contents('php://input')=="") {
+    $params=[];
+} else {
+    $params=json_decode(file_get_contents('php://input'),true);
+}  
 try {
-    if (!isset($_GET["table"]) && !isset($_GET["tout"])) {
+    require './TafConfig.php';
+    $taf_config = new TafConfig();
+    $taf_config->allow_cors();
+    if (empty($params)) {
         $reponse["status"] = false;
-        $reponse["erreur"] = "parameters required";
+        $reponse["erreur"] = "Parameters required";
         echo json_encode($reponse);
         exit;
     }
-    require './TafConfig.php';
-    $taf_config = new TafConfig();
     $reponse["data"] = [
         "all_tables" => false,
         "config" => false,
@@ -72,12 +77,7 @@ try {
         $reponse["status"] = true;
         echo json_encode($reponse);
     }
-    if (isset($_GET["table"])) {
-        $table_name = $_GET["table"];
-        generate($table_name);
-        $reponse["status"] = true;
-        echo json_encode($reponse);
-    } elseif (isset($_GET["tout"])) {
+    if($params["tout"]){
         $query = "SHOW TABLES";
         $tables = $taf_config->get_db()->query($query)->fetchAll(PDO::FETCH_ASSOC);
         foreach ($tables as $key => $value) {
