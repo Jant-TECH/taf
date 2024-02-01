@@ -1,8 +1,6 @@
 <?php
 
 use Taf\TafConfig;
-
-$reponse = array();
 if (file_get_contents('php://input')=="") {
     $params=[];
 } else {
@@ -84,6 +82,12 @@ try {
             $table_name = $value["Tables_in_" . $taf_config->database_name];
             generate($table_name);
         }
+        $reponse["status"] = true;
+        $reponse["data"]["all_tables"] = true;
+        echo json_encode($reponse);
+    } elseif($params["table"]) {
+        $table_name = $params["table"];
+        generate($table_name);
         $reponse["status"] = true;
         $reponse["data"]["all_tables"] = true;
         echo json_encode($reponse);

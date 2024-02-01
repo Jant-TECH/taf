@@ -1,17 +1,25 @@
 <?php
-
+use Taf\TafAuth;
 use Taf\TableDocumentation;
 
 try {
     require '../TafConfig.php';
     require '../TableDocumentation.php';
+    require '../taf_auth/TafAuth.php';
+    $taf_auth = new TafAuth();
+    // toutes les actions nécéssitent une authentification
+    $auth_reponse = $taf_auth->check_auth();
     $taf_config = new \Taf\TafConfig();
     $taf_config->allow_cors();
+    if ($auth_reponse["status"] == false) {
+        echo json_encode($auth_reponse);
+        die;
+    }
     $tables = $taf_config->tables;
     $reponse = array();
     foreach ($tables as $table_name) {
         $file_count = 0;
-        $dir = './';
+        $dir = '../';
         $files = scandir($dir);
         foreach ($files as $file) {
             if (array_search($table_name, $files)) {
