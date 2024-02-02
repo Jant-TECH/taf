@@ -35,6 +35,20 @@ class TableQuery
         }
         return "INSERT INTO $this->table_name(" . implode(",", $keys) . ") VALUES(" . implode(",", $values) . ")";
     }
+    function dynamicInsert2($array)
+    {
+        $keys = array();
+        $values = array();
+        foreach ($array as $value) {
+            $keys[] = addslashes(htmlspecialchars($value["field"]));
+            if ($value == '') {
+                $values[] = 'null';
+            } else {
+                $values[] = "'" . addslashes(htmlspecialchars($value["valeur"])) . "'";
+            }
+        }
+        return "INSERT INTO $this->table_name(" . implode(",", $keys) . ") VALUES(" . implode(",", $values) . ")";
+    }
 
     function dynamicUpdate($assoc_array, $condition)
     {

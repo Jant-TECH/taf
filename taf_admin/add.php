@@ -30,12 +30,11 @@ try {
     }
     // pour charger l'heure courante
     // $params["params"]["date_enregistrement"]=date("Y-m-d H:i:s");
-    $query = $table_query->dynamicInsert($params["params"]);
-    // $reponse["query"]=$query;
+    $query = $table_query->dynamicInsert2($params["params"]["les_champs"]);
+    $reponse["query"]=$query;
     if ($taf_config->get_db()->exec($query)) {
         $reponse["status"] = true;
-        $params["params"]["id_$table_name"] = $taf_config->get_db()->lastInsertId();
-        $reponse["data"] = $params["params"];
+        $reponse["data"] = $taf_config->get_db()->lastInsertId();
     } else {
         $reponse["status"] = false;
         $reponse["erreur"] = "Erreur d'insertion à la base de ";
